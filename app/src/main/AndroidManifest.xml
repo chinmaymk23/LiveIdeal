@@ -29,5 +29,4 @@
             android:name=".SignupActivity"
             android:theme="@style/AppTheme.Dark" />
     </application>
-
 </manifest>
