@@ -96,8 +96,9 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
 
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
+                Intent intent = new Intent(getApplicationContext(), Homepage.class);
+                startActivityForResult(intent, REQUEST_SIGNUP);
+                finish();
                 this.finish();
             }
         }
@@ -144,6 +145,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+        Intent intent = new Intent(getApplicationContext(), Homepage.class);
+        startActivityForResult(intent, REQUEST_SIGNUP);
         finish();
     }
 
