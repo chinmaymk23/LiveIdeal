@@ -76,7 +76,7 @@
                     android:id="@+id/button2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Go to relocation mode"
+                    android:text="@string/goto_reloc"
                     tools:layout_editor_absoluteX="159dp"
                     tools:layout_editor_absoluteY="236dp" />
             </android.support.constraint.ConstraintLayout>
@@ -115,14 +115,6 @@
                     tools:layout_editor_absoluteX="18dp"
                     tools:layout_editor_absoluteY="58dp"
                     tools:srcCompat="@drawable/vacation" />
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Go to vacation mode"
-                    tools:layout_editor_absoluteX="174dp"
-                    tools:layout_editor_absoluteY="229dp" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
     </android.support.constraint.ConstraintLayout>
