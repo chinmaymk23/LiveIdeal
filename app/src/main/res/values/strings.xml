@@ -98,6 +98,16 @@
         <item>No</item>
     </string-array>
 
+    <string-array name="season_array">
+        <item>Off-season</item>
+        <item>Peak season</item>
+    </string-array>
+
+    <string-array name="cuisine_array">
+        <item>Local</item>
+        <item>Continental</item>
+    </string-array>
+
     <string-array name="partySpots_array">
         <item>Yes</item>
         <item>No</item>

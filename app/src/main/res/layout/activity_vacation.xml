@@ -56,7 +56,7 @@
             android:layout_height="match_parent">
 
             <Spinner
-                android:id="@+id/historical_places"
+                android:id="@+id/historicalPlaces"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -84,7 +84,7 @@
             android:layout_height="match_parent">
 
             <Spinner
-                android:id="@+id/family"
+                android:id="@+id/familyFriendly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -97,7 +97,7 @@
             android:layout_height="match_parent">
 
             <Spinner
-                android:id="@+id/party_spots"
+                android:id="@+id/partySpots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -123,7 +123,7 @@
             android:layout_height="match_parent">
 
             <Spinner
-                android:id="@+id/local_transport"
+                android:id="@+id/transport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -136,7 +136,7 @@
             android:layout_height="match_parent">
 
             <Spinner
-                android:id="@+id/social_env"
+                android:id="@+id/socialEnvironment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
