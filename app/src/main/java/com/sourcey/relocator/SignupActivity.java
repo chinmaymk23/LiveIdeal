@@ -2,6 +2,7 @@ package com.sourcey.relocator;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,16 +12,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    EditText _firstname;
-    EditText _lastname;
-    EditText _username;
-    EditText _passwordText;
-    EditText _reEnterPasswordText;
-    Button _signupButton;
-    TextView _loginLink;
+    private EditText _firstname;
+    private EditText _lastname;
+    private EditText _username;
+    private EditText _passwordText;
+    private EditText _reEnterPasswordText;
+    private Button _signupButton;
+    private TextView _loginLink;
+
+    private ProgressDialog progressDialog;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,9 @@ public class SignupActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+
+        progressDialog = new ProgressDialog(SignupActivity.this,
+                R.style.AppTheme_Dark_Dialog);
     }
 
     public void signup() {
@@ -64,32 +76,62 @@ public class SignupActivity extends AppCompatActivity {
 
         _signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _firstname.getText().toString();
-        String email = _lastname.getText().toString();
-        String mobile = _username.getText().toString();
+        String firstname = _firstname.getText().toString();
+        String lastname = _lastname.getText().toString();
+        String username = _username.getText().toString();
         String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
 
-        //TODO: Connect to shubham's api
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+        try{
+            String url = "https://mcprojectauth.herokuapp.com/registerUser";
+            JSONObject jsonParam = new JSONObject();
+            jsonParam.put("firstName", firstname);
+            jsonParam.put("lastName", lastname);
+            jsonParam.put("username", username);
+            jsonParam.put("password", password);
+            RegistrationTask r = new RegistrationTask(url, jsonParam);
+            r.execute();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
     }
 
+
+    public boolean registerUser(String url, JSONObject param){
+        try {
+            URL urlObj = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+
+
+            Log.i("JSON", param.toString());
+            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+            os.writeBytes(param.toString());
+
+            os.flush();
+            os.close();
+
+            Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+            Log.i("MSG", conn.getResponseMessage());
+
+            if(conn.getResponseCode() == 200)
+                return true;
+
+            conn.disconnect();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
@@ -99,7 +141,6 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _signupButton.setEnabled(true);
     }
 
@@ -148,5 +189,33 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    class RegistrationTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String url;
+        private final JSONObject jsonParam;
+
+        public RegistrationTask(String url, JSONObject jsonParam) {
+
+            this.url = url;
+            this.jsonParam = jsonParam;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return registerUser(url, jsonParam);
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSuccess) {
+            super.onPostExecute(isSuccess);
+            progressDialog.dismiss();
+            if (isSuccess)
+                onSignupSuccess();
+            else
+                onSignupFailed();
+        }
     }
 }

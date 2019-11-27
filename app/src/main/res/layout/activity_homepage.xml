@@ -41,8 +41,21 @@
 
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/first_city"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/relocationMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Go to relocation mode"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.908"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/relocationView"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -53,7 +66,7 @@
                     android:text="Relocation Mode"
                     android:textAlignment="center"
                     android:textSize="16dp"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView2"
+                    app:layout_constraintBottom_toTopOf="@+id/relocationView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +74,7 @@
                     app:layout_constraintVertical_bias="1.0" />
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/relocationView"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
                     android:layout_marginBottom="56dp"
@@ -70,15 +83,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:srcCompat="@drawable/negotiatingrelocation" />
+                    android:src="@drawable/negotiatingrelocation" />
 
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Go to relocation mode"
-                    tools:layout_editor_absoluteX="159dp"
-                    tools:layout_editor_absoluteY="236dp" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
 
@@ -92,7 +98,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.921">
+
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/vacationCard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -100,29 +108,38 @@
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="Vacation Mode"
                     android:textAlignment="center"
                     android:textSize="16dp"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="16dp" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/vacationImage"
                     android:layout_width="338dp"
                     android:layout_height="160dp"
+                    android:layout_marginStart="16dp"
                     android:scaleType="fitXY"
-                    tools:layout_editor_absoluteX="18dp"
-                    tools:layout_editor_absoluteY="58dp"
-                    tools:srcCompat="@drawable/vacation" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView2"
+                    app:layout_constraintVertical_bias="0.358"
+                    android:src ="@drawable/vacation" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/vacationMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
                     android:text="Go to vacation mode"
-                    tools:layout_editor_absoluteX="174dp"
-                    tools:layout_editor_absoluteY="229dp" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.915"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/vacationImage"
+                    app:layout_constraintVertical_bias="0.0" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
     </android.support.constraint.ConstraintLayout>
