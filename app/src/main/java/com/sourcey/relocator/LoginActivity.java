@@ -18,10 +18,12 @@ import org.json.JSONObject;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private int userId = 0;
 
     private EditText _username;
     private EditText _passwordText;
@@ -97,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 Intent intent = new Intent(getApplicationContext(), Homepage.class);
+                intent.putExtra("userId", userId);
                 startActivityForResult(intent, REQUEST_SIGNUP);
                 finish();
                 this.finish();
@@ -127,8 +130,19 @@ public class LoginActivity extends AppCompatActivity {
             Log.i("MSG", conn.getResponseMessage());
             System.out.println(conn.getResponseCode() + " " + conn.getResponseMessage());
 
-            if (conn.getResponseCode() == 200)
+            if (conn.getResponseCode() == 200) {
+                String jsonResponse = new String();
+                Scanner sc = new Scanner(conn.getInputStream());
+                while(sc.hasNext())
+                {
+                    jsonResponse+=sc.nextLine();
+                }
+                sc.close();
+                Log.i("Login response", jsonResponse);
+                JSONObject loginResponse = new JSONObject(jsonResponse);
+                userId = Integer.parseInt(loginResponse.getString("id"));
                 return true;
+            }
 
             conn.disconnect();
         } catch (Exception e) {
@@ -146,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         Intent intent = new Intent(getApplicationContext(), Homepage.class);
+        intent.putExtra("userId", userId);
         startActivityForResult(intent, REQUEST_SIGNUP);
         finish();
     }
