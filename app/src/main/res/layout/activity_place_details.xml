@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:minHeight="300dp"
         app:cardUseCompatPadding="true"
-        tools:layout_editor_absoluteX="4dp"
-        tools:layout_editor_absoluteY="315dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="4dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

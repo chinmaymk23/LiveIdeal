@@ -199,7 +199,7 @@ public class LocationActivity extends AppCompatActivity {
         cities.add(city1name);
         cities.add(city2name);
 
-        String url = "";
+        String url = "https://mcfinalprojectml.herokuapp.com/getRecommendations";
         try{
             param.put("userId", userId);
             param.put("type", locationType);
@@ -213,7 +213,7 @@ public class LocationActivity extends AppCompatActivity {
     }
 
 
-    class ConnectTask extends AsyncTask<Void, Void, Boolean> {
+    class ConnectTask extends AsyncTask<Void, Void, String> {
 
         private final String url;
         private final JSONObject jsonParam;
@@ -225,30 +225,33 @@ public class LocationActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected String doInBackground(Void... voids) {
             return connectToApi(url, jsonParam);
 
         }
 
         @Override
-        protected void onPostExecute(Boolean isSuccess) {
-            super.onPostExecute(isSuccess);
-            if (isSuccess)
-                onTaskSuccess();
+        protected void onPostExecute(String jsonResponse) {
+            super.onPostExecute(jsonResponse);
+            if (jsonResponse!=null)
+                onTaskSuccess(jsonResponse);
             else
                 onTaskFailed();
         }
     }
 
-    private void onTaskSuccess(){
+    private void onTaskSuccess(String jsonResponse){
         Toast.makeText(getBaseContext(), "Task successful", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, RecommendationActivity.class);
+        intent.putExtra("jsonResponse",jsonResponse);
+        startActivity(intent);
     }
 
     private void onTaskFailed(){
         Toast.makeText(getBaseContext(), "Task failed", Toast.LENGTH_LONG).show();
     }
 
-    private boolean connectToApi(String url, JSONObject param){
+    private String connectToApi(String url, JSONObject param){
         try {
             URL urlObj = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
@@ -271,14 +274,24 @@ public class LocationActivity extends AppCompatActivity {
             System.out.println(conn.getResponseCode() + " " + conn.getResponseMessage());
 
             if (conn.getResponseCode() == 200) {
-                return true;
+                String jsonResponse = new String();
+                Scanner sc = new Scanner(conn.getInputStream());
+                while(sc.hasNext())
+                {
+                    jsonResponse+=sc.nextLine();
+                }
+                sc.close();
+                Log.i("Login response", jsonResponse);
+                return jsonResponse;
             }
+
+            conn.disconnect();
 
             conn.disconnect();
         } catch (Exception e) {
             System.out.println(e);
         }
-        return false;
+        return null;
     }
 
     private class DownLoadImageTask extends AsyncTask<String,Void, Bitmap> {
