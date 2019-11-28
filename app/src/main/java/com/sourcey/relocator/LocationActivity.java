@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,8 @@ public class LocationActivity extends AppCompatActivity {
     private JSONObject city1Json;
     private JSONObject city2Json;
     private String jsonResponse;
+    private Button shareButton;
+    private Button shareButton2;
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -72,8 +75,40 @@ public class LocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-
-
+        shareButton2 = findViewById(R.id.share_second_city);
+        shareButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(android.content.Intent.ACTION_SEND);
+                i.setType("text/plain");
+                String txt = null;
+                try {
+                    txt = String.valueOf(city2Json.getString("location").charAt(0)).toUpperCase() + city2Json.getString("location").substring(1, city2Json.getString("location").length());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Recommended Place: "+txt);
+                i.putExtra(android.content.Intent.EXTRA_TEXT, "Recommended Place: "+txt);
+                startActivity(Intent.createChooser(i,"Share via"));
+            }
+        });
+        shareButton = findViewById(R.id.share_first_city);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(android.content.Intent.ACTION_SEND);
+                i.setType("text/plain");
+                String txt = null;
+                try {
+                    txt = String.valueOf(city1Json.getString("location").charAt(0)).toUpperCase() + city1Json.getString("location").substring(1, city1Json.getString("location").length());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Recommended Place: "+txt);
+                i.putExtra(android.content.Intent.EXTRA_TEXT, "Recommended Place: "+txt);
+                startActivity(Intent.createChooser(i,"Share via"));
+            }
+        });
         Intent intent = getIntent();
         jsonResponse = intent.getStringExtra("jsonResponse");
         System.out.println(jsonResponse);
