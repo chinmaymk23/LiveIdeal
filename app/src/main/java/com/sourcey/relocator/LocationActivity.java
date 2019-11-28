@@ -47,6 +47,9 @@ public class LocationActivity extends AppCompatActivity {
     private String city2name;
     private int userId;
 
+    private Button rateFirstCity;
+    private Button rateSecondCity;
+
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -100,6 +103,8 @@ public class LocationActivity extends AppCompatActivity {
         navigateCity1 = findViewById(R.id.navigate_first_city);
         recommendation_1 = findViewById(R.id.recommendations_1);
         recommendation_2 = findViewById(R.id.recommendations_2);
+        first_city_image = findViewById(R.id.first_city_image);
+        second_city_image = findViewById(R.id.second_city_image);
 
         String image1URL;
         String image2URL;
@@ -114,11 +119,12 @@ public class LocationActivity extends AppCompatActivity {
 
             first_city.setText(city1name);
             image1URL = city1Json.getString("image_url");
-
+            GlideApp.with(this).load(image1URL).into(first_city_image);
             second_city = (TextView)findViewById(R.id.second_city_name);
             city2name = String.valueOf(city2Json.getString("location").charAt(0)).toUpperCase() + city2Json.getString("location").substring(1, city2Json.getString("location").length());
             second_city.setText(city2name);
             image2URL = city2Json.getString("image_url");
+            GlideApp.with(this).load(image2URL).into(second_city_image);
             city1 = findViewById(R.id.first_city_container);
             city1.setOnClickListener(new View.OnClickListener() {
                 @Override
