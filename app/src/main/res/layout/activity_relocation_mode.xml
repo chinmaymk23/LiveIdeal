@@ -67,13 +67,6 @@
                 android:layout_gravity="center"/>
 
             <Spinner
-                android:id="@+id/relocationCost"
-                android:layout_width="350dp"
-                android:layout_height="54dp"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"/>
-
-            <Spinner
                 android:id="@+id/distCities"
                 android:layout_width="350dp"
                 android:layout_height="54dp"

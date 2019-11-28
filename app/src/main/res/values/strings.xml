@@ -8,17 +8,17 @@
     <string name="goto_reloc">Go to Relocation Mode</string>
 
     <string-array name="housing_array">
-        <item>Under $200</item>
+        <item>under $200</item>
         <item>$200 to $700</item>
-        <item>Above $700</item>
+        <item>above $700</item>
     </string-array>
 
     <string-array name="transportation_array">
-        <item>Public Road Transport</item>
-        <item>Private Road Transport</item>
-        <item>Water Transport</item>
-        <item>Railways</item>
-        <item>Airways</item>
+        <item>Road</item>
+        <item>Land</item>
+        <item>Water</item>
+        <item>Metro</item>
+        <item>Air</item>
     </string-array>
 
     <string-array name="weather_array">
@@ -30,52 +30,45 @@
     </string-array>
 
     <string-array name="crime_array">
-        <item>Low</item>
-        <item>Moderate</item>
-        <item>High</item>
+        <item>low</item>
+        <item>medium</item>
+        <item>high</item>
     </string-array>
 
     <string-array name="population_array">
-        <item>Low</item>
-        <item>Moderate</item>
-        <item>High</item>
+        <item>low</item>
+        <item>moderate</item>
+        <item>high</item>
     </string-array>
 
     <string-array name="expenses_array">
-        <item>Under $40k</item>
-        <item>$40k to $100k</item>
-        <item>Above $100k</item>
-    </string-array>
-
-    <string-array name="relocationCost_array">
-        <item>Under $5k</item>
-        <item>$5k to $20k</item>
-        <item>Above $100k</item>
+        <item>under 40k</item>
+        <item>40k to 100k</item>
+        <item>more than 100k</item>
     </string-array>
 
     <string-array name="distCities_array">
-        <item>Under 10 miles</item>
+        <item>under 10 miles</item>
         <item>10 to 50 miles</item>
-        <item>Above 50 miles</item>
+        <item>more than 100 miles</item>
     </string-array>
 
     <string-array name="traffic_array">
-        <item>Low</item>
-        <item>Moderate</item>
-        <item>High</item>
+        <item>low</item>
+        <item>moderate</item>
+        <item>high</item>
     </string-array>
 
     <string-array name="education_array">
-        <item>Elementary</item>
-        <item>High School</item>
-        <item>College</item>
-        <item>Graduate</item>
+        <item>high school</item>
+        <item>college</item>
+        <item>graduate</item>
     </string-array>
 
     <string-array name="taxes_array">
-        <item>Under 5%</item>
-        <item>5% to 15%</item>
-        <item>Above 15%</item>
+        <item>under 7.5%</item>
+        <item>7.5% to 8.7%</item>
+        <item>above 8.7%</item>
     </string-array>
 
     <string-array name="historicalPlaces_array">
