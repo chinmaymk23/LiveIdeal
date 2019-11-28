@@ -61,10 +61,15 @@ public class VacationActivity extends AppCompatActivity {
     String seasonVal;
     String accomodationVal;
 
+    private int userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation);
+
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("userId", 0);
 
         budget = findViewById(R.id.budget);
         submitVacationPreferences = findViewById(R.id.submitVacationPreferences);
@@ -314,7 +319,6 @@ public class VacationActivity extends AppCompatActivity {
     }
 
     public void submitForm(){
-        JSONObject param = new JSONObject();
         try {
             budgetVal = Long.parseLong(String.valueOf(budget.getText()));
 
@@ -365,6 +369,8 @@ public class VacationActivity extends AppCompatActivity {
         protected void onPostExecute(String jsonResponse) {
             Intent intent = new Intent(VacationActivity.this, LocationActivity.class);
             intent.putExtra("jsonResponse",jsonResponse);
+            intent.putExtra("locationType", "vacation");
+            intent.putExtra("userId", userId);
             progressDialog.dismiss();
             startActivity(intent);
         }

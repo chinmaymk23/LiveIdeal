@@ -17,6 +17,9 @@ public class Homepage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
+        Intent intent = getIntent();
+        final int userId = intent.getIntExtra("userId", 0);
+
         relocationMode = findViewById(R.id.relocationMode);
         vacationMode = findViewById(R.id.vacationMode);
 
@@ -25,6 +28,7 @@ public class Homepage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Homepage.this, RelocationActivity.class);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -35,6 +39,7 @@ public class Homepage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Homepage.this, VacationActivity.class);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
