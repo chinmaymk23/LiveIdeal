@@ -351,7 +351,7 @@ public class RelocationActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String jsonResponse) {
-            Intent intent = new Intent(RelocationActivity.this, Location2Activity.class);
+            Intent intent = new Intent(RelocationActivity.this, LocationActivity.class);
             intent.putExtra("jsonResponse",jsonResponse);
             intent.putExtra("locationType", "relocation");
             intent.putExtra("userId", userId);

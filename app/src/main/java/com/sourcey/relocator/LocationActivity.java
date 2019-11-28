@@ -243,7 +243,7 @@ public class LocationActivity extends AppCompatActivity {
     private void onTaskSuccess(String jsonResponse){
         Toast.makeText(getBaseContext(), "Task successful", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, RecommendationActivity.class);
-        intent.putExtra("jsonResponse",jsonResponse);
+        intent.putExtra("jsonResponse", jsonResponse);
         startActivity(intent);
     }
 
@@ -276,16 +276,13 @@ public class LocationActivity extends AppCompatActivity {
             if (conn.getResponseCode() == 200) {
                 String jsonResponse = new String();
                 Scanner sc = new Scanner(conn.getInputStream());
-                while(sc.hasNext())
-                {
-                    jsonResponse+=sc.nextLine();
+                while (sc.hasNext()){
+                    jsonResponse += sc.nextLine();
                 }
                 sc.close();
-                Log.i("Login response", jsonResponse);
+                Log.i("Login response:", jsonResponse);
                 return jsonResponse;
             }
-
-            conn.disconnect();
 
             conn.disconnect();
         } catch (Exception e) {
