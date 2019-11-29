@@ -31,11 +31,13 @@ public class RecommendationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         jsonResponse = intent.getStringExtra("jsonResponse");
+
         JSONObject cities;
         try {
             cities= new JSONObject(jsonResponse);
             JSONObject city1Json = cities.getJSONObject("city1");
             JSONObject city2Json = cities.getJSONObject("city2");
+
 
             city1Name.setText(String.valueOf(city1Json.getString("location").charAt(0)).toUpperCase() + city1Json.getString("location").substring(1, city1Json.getString("location").length()));
 

@@ -79,16 +79,28 @@ public class LocationActivity extends AppCompatActivity {
 
     private void handleCity1Click() {
         System.out.println(city1Json);
-        Intent intent = new Intent(LocationActivity.this, place_details.class);
-        intent.putExtra("jsonResponse",city1Json.toString());
-        startActivity(intent);
+        if(locationType == "vacation") {
+            Intent intent = new Intent(LocationActivity.this, place_details.class);
+            intent.putExtra("jsonResponse", city1Json.toString());
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(LocationActivity.this, place2details.class);
+            intent.putExtra("jsonResponse", city1Json.toString());
+            startActivity(intent);
+        }
     }
 
     private void handleSecondCityClick() {
         System.out.println(city2Json);
-        Intent intent = new Intent(LocationActivity.this, place_details.class);
-        intent.putExtra("jsonResponse",city2Json.toString());
-        startActivity(intent);
+        if(locationType == "vacation") {
+            Intent intent = new Intent(LocationActivity.this, place_details.class);
+            intent.putExtra("jsonResponse", city2Json.toString());
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(LocationActivity.this, place2details.class);
+            intent.putExtra("jsonResponse", city2Json.toString());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -253,9 +265,15 @@ public class LocationActivity extends AppCompatActivity {
 
     private void onTaskSuccess(String jsonResponse){
         Toast.makeText(getBaseContext(), "Task successful", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, RecommendationActivity.class);
-        intent.putExtra("jsonResponse", jsonResponse);
-        startActivity(intent);
+        if(locationType == "vacation") {
+            Intent intent = new Intent(this, RecommendationActivity.class);
+            intent.putExtra("jsonResponse", jsonResponse);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(this, RecommendationActivity.class);
+            intent.putExtra("jsonResponse", jsonResponse);
+            startActivity(intent);
+        }
     }
 
     private void onTaskFailed(){
