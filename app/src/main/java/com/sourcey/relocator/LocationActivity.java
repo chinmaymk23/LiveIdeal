@@ -35,6 +35,8 @@ public class LocationActivity extends AppCompatActivity {
     private CardView city2;
     private Button recommendation_1;
     private Button recommendation_2;
+    private Button bookmarkCity1;
+    private Button bookmarkCity2;
 
     private JSONObject city1Json;
     private JSONObject city2Json;
@@ -103,6 +105,83 @@ public class LocationActivity extends AppCompatActivity {
         }
     }
 
+    private void bookmarkCity(String city){
+        try{
+            String url = "https://mcprojectauth.herokuapp.com/addBookmark";
+            JSONObject jsonParam = new JSONObject();
+            jsonParam.put("userId", userId);
+            jsonParam.put("place", city);
+            jsonParam.put("type", locationType);
+            BookmarkTask BookmarkTask = new BookmarkTask(url, jsonParam);
+            BookmarkTask.execute();
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    class BookmarkTask extends AsyncTask<Void, Void, Boolean>{
+
+        private final String url;
+        private final JSONObject jsonParam;
+
+        public BookmarkTask(String url, JSONObject jsonParam){
+            this.url = url;
+            this.jsonParam = jsonParam;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return getBookmarkResponse(url, jsonParam);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSuccess) {
+            if(isSuccess == true) {
+                Toast.makeText(getBaseContext(), "Bookmark Added", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public Boolean getBookmarkResponse(String url, JSONObject jsonParam){
+        try{
+            URL urlObj = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+
+            Log.i("JSON", jsonParam.toString());
+            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+            os.writeBytes(jsonParam.toString());
+
+            os.flush();
+            os.close();
+
+            Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+            Log.i("MSG", conn.getResponseMessage());
+            System.out.println(conn.getResponseCode() + " " + conn.getResponseMessage());
+
+            if(conn.getResponseCode() == 200){
+                String inline = new String();
+                Scanner sc = new Scanner(conn.getInputStream());
+                while(sc.hasNext()){
+                    inline += sc.nextLine();
+                }
+                System.out.println(inline);
+                sc.close();
+            }
+
+            conn.disconnect();
+            if(conn.getResponseCode() == 200){return true;}
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,6 +234,9 @@ public class LocationActivity extends AppCompatActivity {
         first_city_image = findViewById(R.id.first_city_image);
         second_city_image = findViewById(R.id.second_city_image);
 
+        bookmarkCity1 = (Button)findViewById(R.id.bookmark_first_city);
+        bookmarkCity2 = (Button)findViewById(R.id.bookmark_second_city);
+
         String image1URL;
         String image2URL;
 
@@ -194,6 +276,19 @@ public class LocationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     handleSecondCityClick();
+                }
+            });
+
+            bookmarkCity1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bookmarkCity(city1name);
+                }
+            });
+            bookmarkCity2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bookmarkCity(city2name);
                 }
             });
         }

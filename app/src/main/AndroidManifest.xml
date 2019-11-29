@@ -10,7 +10,8 @@
         android:icon="@drawable/app_icon"
         android:label="Group 10 Mobile Computing project"
         android:theme="@style/AppTheme">
-        <activity android:name=".place2details"></activity>
+        <activity android:name=".Bookmark"></activity>
+        <activity android:name=".place2details" />
         <activity android:name=".RecommendationActivity" />
         <activity
             android:name=".FeedbackActivity"
