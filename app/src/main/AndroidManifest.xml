@@ -19,6 +19,7 @@
         <activity android:name=".LocationActivity" />
         <activity android:name=".VacationActivity" />
         <activity android:name=".RelocationActivity" />
+        <activity android:name=".Bookmark"/>
         <activity android:name=".Homepage" />
         <activity
             android:name=".MainActivity"
