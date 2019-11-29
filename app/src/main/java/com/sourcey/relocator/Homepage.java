@@ -24,6 +24,8 @@ public class Homepage extends AppCompatActivity {
 
         relocationMode = findViewById(R.id.relocationMode);
         vacationMode = findViewById(R.id.vacationMode);
+        bookmarkRelocation = findViewById(R.id.bookmark_relocation);
+        bookmarkVacation = findViewById(R.id.bookmark_vacation);
 
         relocationMode.setOnClickListener(new View.OnClickListener() {
 
