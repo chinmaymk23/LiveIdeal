@@ -21,7 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
-public class    VacationActivity extends AppCompatActivity {
+public class VacationActivity extends AppCompatActivity {
 
     private String[] weatherArray;
     private String[] historicalPlacesArray;
