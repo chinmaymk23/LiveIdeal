@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class Bookmark extends AppCompatActivity {
+public class Bookmark2 extends AppCompatActivity {
 
     private ArrayList<String> pNames = new ArrayList<>();
     private ArrayList<String> dButtons = new ArrayList<>();
@@ -15,12 +15,10 @@ public class Bookmark extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle  savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bookmark);
-        pNames.add("Grand Forks");
-        pNames.add("Cerrilios");
-        pNames.add("Houston");
-        pNames.add("Tampa");
-        pNames.add("Rockford");
+        setContentView(R.layout.activity_bookmark2);
+        pNames.add("Peru");
+        pNames.add("South Africa");
+        pNames.add("Amsterdam");
 
         initRecyclerView();
     }
