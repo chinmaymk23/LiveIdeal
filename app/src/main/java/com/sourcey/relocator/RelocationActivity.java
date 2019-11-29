@@ -65,7 +65,7 @@ public class RelocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relocation_mode);
 
-        Intent intent = new Intent();
+        Intent intent = getIntent();
         userId = intent.getIntExtra("userId",0);
 
         progressDialog = new ProgressDialog(RelocationActivity.this, R.style.AppTheme_Dark_Dialog);
@@ -355,6 +355,7 @@ public class RelocationActivity extends AppCompatActivity {
             intent.putExtra("jsonResponse",jsonResponse);
             intent.putExtra("locationType", "relocation");
             intent.putExtra("userId", userId);
+            System.out.println("Reloc UserId :" + userId);
             progressDialog.dismiss();
             startActivity(intent);
         }
