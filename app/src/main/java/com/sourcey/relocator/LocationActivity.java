@@ -3,6 +3,7 @@ package com.sourcey.relocator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class LocationActivity extends AppCompatActivity {
     private String locationType;
 
     private Button navigateCity1;
+    //private Button navigateCity2;
 
     private String city1name;
     private String city2name;
@@ -75,6 +77,29 @@ public class LocationActivity extends AppCompatActivity {
         }
     }
 
+    public void process(View view) {
+        if (view.getId() == R.id.navigate_first_city) {
+//            intent = new Intent(android.content.Intent.ACTION_VIEW);
+//            intent.setData(Uri.parse("google.navigation:q=" + city1Json));
+//            chooser=Intent.createChooser(intent, "city1Json");
+//            startActivity(chooser);
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + city1Json);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        }
+        if (view.getId() == R.id.navigate_second_city) {
+//            intent = new Intent(android.content.Intent.ACTION_VIEW);
+//            intent.setData(Uri.parse("google.navigation:q=" + city2Json));
+//            chooser=Intent.createChooser(intent, "city2Json");
+//            startActivity(chooser);
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + city2Json);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        }
+    }
+
     private void handleCity1Click() {
         System.out.println(city1Json);
         Intent intent = new Intent(LocationActivity.this, place_details.class);
@@ -101,6 +126,7 @@ public class LocationActivity extends AppCompatActivity {
         userId = intent.getIntExtra("userId", 0);
 
         navigateCity1 = findViewById(R.id.navigate_first_city);
+        //navigateCity2 = findViewById(R.id.navigate_second_city);
         recommendation_1 = findViewById(R.id.recommendations_1);
         recommendation_2 = findViewById(R.id.recommendations_2);
         first_city_image = findViewById(R.id.first_city_image);
@@ -314,3 +340,5 @@ public class LocationActivity extends AppCompatActivity {
                     }
                 }
             });*/
+
+
