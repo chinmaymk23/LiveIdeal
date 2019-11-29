@@ -17,11 +17,10 @@
 
     <string-array name="transportation_array">
         <item>Please select transportation</item>
-        <item>Public Road Transport</item>
-        <item>Private Road Transport</item>
-        <item>Water Transport</item>
-        <item>Railways</item>
-        <item>Airways</item>
+        <item>road</item>
+        <item>water</item>
+        <item>metro</item>
+        <item>air</item>
     </string-array>
 
     <string-array name="weather_array">
@@ -34,7 +33,7 @@
     </string-array>
 
     <string-array name="crime_array">
-        <item>Please select weather</item>
+        <item>Please select crime rate</item>
         <item>Low</item>
         <item>Moderate</item>
         <item>High</item>
@@ -49,9 +48,9 @@
 
     <string-array name="expenses_array">
         <item>Please select living expenses</item>
-        <item>Under $40k</item>
-        <item>$40k to $100k</item>
-        <item>Above $100k</item>
+        <item>Under 40k</item>
+        <item>40k to 100k</item>
+        <item>Above 100k</item>
     </string-array>
 
     <string-array name="relocationCost_array">
@@ -85,9 +84,9 @@
 
     <string-array name="taxes_array">
         <item>Please select taxes in city</item>
-        <item>Under 5%</item>
-        <item>5% to 15%</item>
-        <item>Above 15%</item>
+        <item>under 7.5%</item>
+        <item>7.5% to 8.7%</item>
+        <item>Above 8.7%</item>
     </string-array>
 
     <string-array name="historicalPlaces_array">
@@ -138,7 +137,6 @@
     </string-array>
 
     <string-array name="socialEnvironment_array">
-        <item>Please select social environment</item>
         <item>Friendly</item>
         <item>Acceptable</item>
     </string-array>

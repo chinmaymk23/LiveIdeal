@@ -38,6 +38,8 @@ public class LocationActivity extends AppCompatActivity {
     private CardView city2;
     private Button recommendation_1;
     private Button recommendation_2;
+    private Button bookmarkCity1;
+    private Button bookmarkCity2;
 
     private JSONObject city1Json;
     private JSONObject city2Json;
@@ -71,7 +73,11 @@ public class LocationActivity extends AppCompatActivity {
                 i.setType("text/plain");
                 String txt = null;
                 try {
-                    txt = String.valueOf(city2Json.getString("location").charAt(0)).toUpperCase() + city2Json.getString("location").substring(1, city2Json.getString("location").length());
+                    if(locationType.equals("vacation")) {
+                        txt = String.valueOf(city2Json.getString("location").charAt(0)).toUpperCase() + city2Json.getString("location").substring(1, city2Json.getString("location").length());
+                    }else{
+                        txt = String.valueOf(city2Json.getString("city").charAt(0)).toUpperCase() + city2Json.getString("city").substring(1, city2Json.getString("city").length());
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -88,7 +94,11 @@ public class LocationActivity extends AppCompatActivity {
                 i.setType("text/plain");
                 String txt = null;
                 try {
-                    txt = String.valueOf(city1Json.getString("location").charAt(0)).toUpperCase() + city1Json.getString("location").substring(1, city1Json.getString("location").length());
+                    if(locationType.equals("vacation")){
+                        txt = String.valueOf(city1Json.getString("location").charAt(0)).toUpperCase() + city1Json.getString("location").substring(1, city1Json.getString("location").length());
+                    }else{
+                        txt = String.valueOf(city1Json.getString("city").charAt(0)).toUpperCase() + city1Json.getString("city").substring(1, city1Json.getString("city").length());
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -121,13 +131,19 @@ public class LocationActivity extends AppCompatActivity {
             city2Json = cities.getJSONObject("city2");
 
             first_city = (TextView)findViewById(R.id.first_city_name);
-            city1name = String.valueOf(city1Json.getString("location").charAt(0)).toUpperCase() + city1Json.getString("location").substring(1, city1Json.getString("location").length());
+            if(locationType.equals("vacation")){
+                city1name = String.valueOf(city1Json.getString("location").charAt(0)).toUpperCase() + city1Json.getString("location").substring(1, city1Json.getString("location").length());
+                city2name = String.valueOf(city2Json.getString("location").charAt(0)).toUpperCase() + city2Json.getString("location").substring(1, city2Json.getString("location").length());
+            }else{
+                city1name = String.valueOf(city1Json.getString("city").charAt(0)).toUpperCase() + city1Json.getString("city").substring(1, city1Json.getString("city").length());
+                city2name = String.valueOf(city2Json.getString("city").charAt(0)).toUpperCase() + city2Json.getString("city").substring(1, city2Json.getString("city").length());
+            }
+
 
             first_city.setText(city1name);
             image1URL = city1Json.getString("image_url");
             GlideApp.with(this).load(image1URL).into(first_city_image);
             second_city = (TextView)findViewById(R.id.second_city_name);
-            city2name = String.valueOf(city2Json.getString("location").charAt(0)).toUpperCase() + city2Json.getString("location").substring(1, city2Json.getString("location").length());
             second_city.setText(city2name);
             image2URL = city2Json.getString("image_url");
             GlideApp.with(this).load(image2URL).into(second_city_image);
@@ -143,6 +159,22 @@ public class LocationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     handleSecondCityClick();
+                }
+            });
+
+            bookmarkCity1 = (Button)findViewById(R.id.bookmark_first_city);
+            bookmarkCity2 = (Button)findViewById(R.id.bookmark_second_city);
+
+            bookmarkCity1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bookmarkCity(city1name);
+                }
+            });
+            bookmarkCity2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bookmarkCity(city2name);
                 }
             });
         }
@@ -255,16 +287,29 @@ public class LocationActivity extends AppCompatActivity {
 
     private void handleCity1Click() {
         System.out.println(city1Json);
-        Intent intent = new Intent(LocationActivity.this, place_details.class);
-        intent.putExtra("jsonResponse",city1Json.toString());
-        startActivity(intent);
+        if(locationType.equals("vacation")) {
+            Intent intent = new Intent(LocationActivity.this, place_details.class);
+            intent.putExtra("jsonResponse", city1Json.toString());
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(LocationActivity.this, place2details.class);
+            intent.putExtra("jsonResponse", city1Json.toString());
+            startActivity(intent);
+        }
+
     }
 
     private void handleSecondCityClick() {
-        System.out.println(city2Json);
-        Intent intent = new Intent(LocationActivity.this, place_details.class);
-        intent.putExtra("jsonResponse",city2Json.toString());
-        startActivity(intent);
+        if(locationType.equals("vacation")) {
+            System.out.println(city2Json);
+            Intent intent = new Intent(LocationActivity.this, place_details.class);
+            intent.putExtra("jsonResponse", city2Json.toString());
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(LocationActivity.this, place2details.class);
+            intent.putExtra("jsonResponse", city2Json.toString());
+            startActivity(intent);
+        }
     }
 
 
@@ -358,6 +403,82 @@ public class LocationActivity extends AppCompatActivity {
             System.out.println(e);
         }
         return null;
+    }
+
+    private void bookmarkCity(String city){
+        try{
+            String url = "https://mcprojectauth.herokuapp.com/addBookmark";
+            JSONObject jsonParam = new JSONObject();
+            jsonParam.put("userId", userId);
+            jsonParam.put("place", city);
+            jsonParam.put("type", locationType);
+            BookmarkTask BookmarkTask = new BookmarkTask(url, jsonParam);
+            BookmarkTask.execute();
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    class BookmarkTask extends AsyncTask<Void, Void, Boolean>{
+
+        private final String url;
+        private final JSONObject jsonParam;
+
+        public BookmarkTask(String url, JSONObject jsonParam){
+            this.url = url;
+            this.jsonParam = jsonParam;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return getBookmarkResponse(url, jsonParam);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSuccess) {
+            if(isSuccess == true) {
+                Toast.makeText(getBaseContext(), "Bookmark Added", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public Boolean getBookmarkResponse(String url, JSONObject jsonParam){
+        try{
+            URL urlObj = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+
+            Log.i("JSON", jsonParam.toString());
+            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+            os.writeBytes(jsonParam.toString());
+
+            os.flush();
+            os.close();
+
+            Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+            Log.i("MSG", conn.getResponseMessage());
+            System.out.println(conn.getResponseCode() + " " + conn.getResponseMessage());
+
+            if(conn.getResponseCode() == 200){
+                String inline = new String();
+                Scanner sc = new Scanner(conn.getInputStream());
+                while(sc.hasNext()){
+                    inline += sc.nextLine();
+                }
+                System.out.println(inline);
+                sc.close();
+            }
+
+            conn.disconnect();
+            if(conn.getResponseCode() == 200){return true;}
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
     }
 }
 

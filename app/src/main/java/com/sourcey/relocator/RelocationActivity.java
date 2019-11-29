@@ -1,5 +1,7 @@
 package com.sourcey.relocator;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,11 +29,11 @@ public class RelocationActivity extends AppCompatActivity {
     private String[] crimeArray;
     private String[] populationArray;
     private String[] expensesArray;
-    private String[] relocationCostArray;
     private String[] distCitiesArray;
     private String[] trafficArray;
     private String[] educationArray;
     private String[] taxesArray;
+    private ProgressDialog progressDialog;
 
     private Spinner housing;
     private Spinner transportation;
@@ -38,7 +41,6 @@ public class RelocationActivity extends AppCompatActivity {
     private Spinner crime;
     private Spinner population;
     private Spinner expenses;
-    private Spinner relocationCost;
     private Spinner distCitites;
     private Spinner traffic;
     private Spinner education;
@@ -51,11 +53,12 @@ public class RelocationActivity extends AppCompatActivity {
     String crimeVal;
     String populationVal;
     String expensesVal;
-    String relocationCostVal;
     String distCititesVal;
     String trafficVal;
     String educationVal;
     String taxesVal;
+
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +71,24 @@ public class RelocationActivity extends AppCompatActivity {
         crime = findViewById(R.id.crime);
         population = findViewById(R.id.population);
         expenses = findViewById(R.id.expenses);
-        relocationCost = findViewById(R.id.relocationCost);
         distCitites = findViewById(R.id.distCities);
         traffic = findViewById(R.id.traffic);
         education = findViewById(R.id.education);
         taxes = findViewById(R.id.taxes);
         submit = (Button) findViewById(R.id.submit_form);
 
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("userId", 0);
+
+        progressDialog = new ProgressDialog(RelocationActivity.this, R.style.AppTheme_Dark_Dialog);
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Loading...");
+                progressDialog.show();
                 submitForm();
             }
         });
@@ -209,26 +219,7 @@ public class RelocationActivity extends AppCompatActivity {
             }
         });
 
-        //Relocation Cost Spinner
-        ArrayAdapter<String> relocationCostAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.relocationCost_array));
 
-        relocationCostAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        relocationCost.setAdapter(relocationCostAdapter);
-
-        relocationCostArray = getResources().getStringArray(R.array.relocationCost_array);
-
-        relocationCost.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                relocationCostVal = relocationCostArray[i];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                relocationCostVal = relocationCostArray[0];//if nothing is selected, then default value is first value
-            }
-        });
 
         //Distance from Cities Spinner
         ArrayAdapter<String> distCitiesAdapter = new ArrayAdapter<String>(this,
@@ -322,6 +313,10 @@ public class RelocationActivity extends AppCompatActivity {
         try{
             String url = "https://mcfinalprojectml.herokuapp.com/getNearestRelocation";
             JSONObject jsonParam = new JSONObject();
+            JSONArray jsonWeather = new JSONArray();
+            JSONArray jsonTransport = new JSONArray();
+            jsonWeather.put(weatherRelocVal);
+            jsonTransport.put(transportationVal);
             jsonParam.put("taxes", taxesVal);
             jsonParam.put("crime_rate", crimeVal);
             jsonParam.put("rent", housingVal);
@@ -330,8 +325,8 @@ public class RelocationActivity extends AppCompatActivity {
             jsonParam.put("population_density", populationVal);
             jsonParam.put("living_expenses", expensesVal);
             jsonParam.put("distance_from_other_cities", distCititesVal);
-            jsonParam.put("weather", weatherRelocVal);
-            jsonParam.put("access_of_local_transport", transportationVal);
+            jsonParam.put("weather", jsonWeather);
+            jsonParam.put("access_of_local_transport", jsonTransport);
             RelocationTask RelocationTask = new RelocationTask(url, jsonParam);
             RelocationTask.execute();
         }catch (JSONException e){
@@ -339,7 +334,7 @@ public class RelocationActivity extends AppCompatActivity {
         }
     }
 
-    class RelocationTask extends AsyncTask<Void, Void, Boolean> {
+    class RelocationTask extends AsyncTask<Void, Void, String> {
 
         private final String url;
         private final JSONObject jsonParam;
@@ -351,17 +346,23 @@ public class RelocationActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected String doInBackground(Void... voids) {
             return getRelocationResponse(url, jsonParam);
         }
 
         @Override
-        protected void onPostExecute(Boolean isSuccess) {
+        protected void onPostExecute(String jsonResponse) {
+            Intent intent = new Intent(RelocationActivity.this, LocationActivity.class);
+            intent.putExtra("jsonResponse",jsonResponse);
+            intent.putExtra("locationType", "relocation");
+            intent.putExtra("userId", userId);
+            progressDialog.dismiss();
+            startActivity(intent);
         }
     }
 
 
-    public boolean getRelocationResponse(String url, JSONObject param) {
+    public String getRelocationResponse(String url, JSONObject param) {
 
         try {
             URL urlObj = new URL(url);
@@ -385,20 +386,21 @@ public class RelocationActivity extends AppCompatActivity {
             System.out.println(conn.getResponseCode() + " " + conn.getResponseMessage());
 
             if (conn.getResponseCode() == 200) {
-                String inline = new String();
+                String jsonResponse = new String();
                 Scanner sc = new Scanner(conn.getInputStream());
                 while(sc.hasNext())
                 {
-                    inline+=sc.nextLine();
+                    jsonResponse+=sc.nextLine();
                 }
-                System.out.println(inline);
+                System.out.println(jsonResponse);
                 sc.close();
+                return jsonResponse;
             }
 
             conn.disconnect();
         } catch (Exception e) {
             System.out.println(e);
         }
-        return false;
+        return null;
     }
 }
