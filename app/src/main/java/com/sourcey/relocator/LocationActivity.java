@@ -1,9 +1,11 @@
 package com.sourcey.relocator;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,48 +51,13 @@ public class LocationActivity extends AppCompatActivity {
     private String city1name;
     private String city2name;
     private int userId;
+    private float rating = 0;
 
     private Button rateFirstCity;
     private Button rateSecondCity;
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
-
-    private void handleCity1Click() {
-        System.out.println(city1Json);
-        Intent intent = new Intent(LocationActivity.this, place_details.class);
-        intent.putExtra("jsonResponse",city1Json.toString());
-        startActivity(intent);
-    }
-
-    private void handleSecondCityClick() {
-        System.out.println(city2Json);
-        Intent intent = new Intent(LocationActivity.this, place_details.class);
-        intent.putExtra("jsonResponse",city2Json.toString());
-        startActivity(intent);
-    }
+    private AlertDialog ratingDialog;
+    private String rateCityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,12 +102,16 @@ public class LocationActivity extends AppCompatActivity {
         locationType = intent.getStringExtra("locationType");
         userId = intent.getIntExtra("userId", 0);
 
+        createDialog();
+
         navigateCity1 = findViewById(R.id.navigate_first_city);
         recommendation_1 = findViewById(R.id.recommendations_1);
         recommendation_2 = findViewById(R.id.recommendations_2);
         first_city_image = findViewById(R.id.first_city_image);
         second_city_image = findViewById(R.id.second_city_image);
-
+        rateFirstCity = findViewById(R.id.rate_first_city);
+        rateSecondCity = findViewById(R.id.rate_second_city);
+        
         String image1URL;
         String image2URL;
 
@@ -178,6 +150,22 @@ public class LocationActivity extends AppCompatActivity {
             Log.e("JSONError", j.toString());
         }
 
+        rateFirstCity.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ratingDialog.show();
+                rateCityName = city1name;
+            }
+        }));
+
+        rateSecondCity.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ratingDialog.show();
+                rateCityName = city2name;
+            }
+        }));
+
         recommendation_1.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,6 +181,60 @@ public class LocationActivity extends AppCompatActivity {
         }));
     }
 
+    private void saveRating() {
+        JSONObject param = new JSONObject();
+
+        String url = "https://mcprojectauth.herokuapp.com/saveRating";
+        try{
+            param.put("userId", userId);
+            param.put("type", locationType);
+            param.put("place", rateCityName);
+            param.put("rating", rating);
+            Log.i("Location params", param.toString());
+            ConnectTask conn = new ConnectTask(url, param, "rating");
+            conn.execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Name");
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.dialog_feedback, null);
+        builder.setView(customLayout);
+        // add a button
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                RatingBar ratingBar = customLayout.findViewById(R.id.ratingBar);
+
+                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    public void onRatingChanged(RatingBar ratingBar, float rating,
+                                                boolean fromUser) {
+
+                        rating = ratingBar.getNumStars();
+                    }
+                });
+
+                ratingBar.getNumStars();
+                Toast.makeText(getBaseContext(), "Rating: "+ratingBar.getNumStars(), Toast.LENGTH_LONG).show();
+                rating = (int) ratingBar.getRating();
+                saveRating();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        // create and show the alert dialog
+        ratingDialog = builder.create();
+    }
+
     private void getRecommendations(String city1name, String city2name){
         JSONObject param = new JSONObject();
         ArrayList<String> cities = new ArrayList<String>();
@@ -205,11 +247,25 @@ public class LocationActivity extends AppCompatActivity {
             param.put("type", locationType);
             param.put("alreadyPresentCities", new JSONArray(cities));
             Log.i("Location params", param.toString());
-            ConnectTask conn = new ConnectTask(url, param);
+            ConnectTask conn = new ConnectTask(url, param, "recommendation");
             conn.execute();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleCity1Click() {
+        System.out.println(city1Json);
+        Intent intent = new Intent(LocationActivity.this, place_details.class);
+        intent.putExtra("jsonResponse",city1Json.toString());
+        startActivity(intent);
+    }
+
+    private void handleSecondCityClick() {
+        System.out.println(city2Json);
+        Intent intent = new Intent(LocationActivity.this, place_details.class);
+        intent.putExtra("jsonResponse",city2Json.toString());
+        startActivity(intent);
     }
 
 
@@ -217,11 +273,13 @@ public class LocationActivity extends AppCompatActivity {
 
         private final String url;
         private final JSONObject jsonParam;
+        private final String requestType;
 
-        public ConnectTask(String url, JSONObject jsonParam) {
+        public ConnectTask(String url, JSONObject jsonParam, String type) {
 
             this.url = url;
             this.jsonParam = jsonParam;
+            this.requestType = type;
         }
 
         @Override
@@ -233,8 +291,13 @@ public class LocationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String jsonResponse) {
             super.onPostExecute(jsonResponse);
-            if (jsonResponse!=null)
-                onTaskSuccess(jsonResponse);
+            if (jsonResponse!=null) {
+                if(requestType == "recommendation")
+                    onTaskSuccess(jsonResponse);
+                else if(requestType == "rating")
+                    onTaskSuccess();
+
+            }
             else
                 onTaskFailed();
         }
@@ -245,6 +308,10 @@ public class LocationActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RecommendationActivity.class);
         intent.putExtra("jsonResponse",jsonResponse);
         startActivity(intent);
+    }
+
+    private void onTaskSuccess(){
+        Toast.makeText(getBaseContext(), "Task successful", Toast.LENGTH_LONG).show();
     }
 
     private void onTaskFailed(){
@@ -274,7 +341,7 @@ public class LocationActivity extends AppCompatActivity {
             System.out.println(conn.getResponseCode() + " " + conn.getResponseMessage());
 
             if (conn.getResponseCode() == 200) {
-                String jsonResponse = new String();
+                String jsonResponse = "";
                 Scanner sc = new Scanner(conn.getInputStream());
                 while(sc.hasNext())
                 {
@@ -292,40 +359,6 @@ public class LocationActivity extends AppCompatActivity {
             System.out.println(e);
         }
         return null;
-    }
-
-    private class DownLoadImageTask extends AsyncTask<String,Void, Bitmap> {
-        ImageView imageView;
-        String url;
-
-        public DownLoadImageTask(String url, ImageView imageView){
-            this.url = url;
-            this.imageView = imageView;
-        }
-
-        protected Bitmap doInBackground(String...urls){
-            String urlOfImage = url;
-            Bitmap logo = null;
-            try{
-                InputStream is = new URL(urlOfImage).openStream();
-                /*
-                    decodeStream(InputStream is)
-                        Decode an input stream into a bitmap.
-                 */
-                logo = BitmapFactory.decodeStream(is);
-            }catch(Exception e){ // Catch the download exception
-                e.printStackTrace();
-            }
-            return logo;
-        }
-
-        /*
-            onPostExecute(Result result)
-                Runs on the UI thread after doInBackground(Params...).
-         */
-        protected void onPostExecute(Bitmap result){
-            imageView.setImageBitmap(result);
-        }
     }
 }
 
