@@ -101,6 +101,9 @@ public class LocationActivity extends AppCompatActivity {
         jsonResponse = intent.getStringExtra("jsonResponse");
         locationType = intent.getStringExtra("locationType");
         userId = intent.getIntExtra("userId", 0);
+        System.out.println("JSONResponse: " + jsonResponse);
+        System.out.println("Location Type :" + locationType);
+        System.out.println("USER ID :" + userId);
 
         createDialog();
 
@@ -121,13 +124,21 @@ public class LocationActivity extends AppCompatActivity {
             city2Json = cities.getJSONObject("city2");
 
             first_city = (TextView)findViewById(R.id.first_city_name);
-            city1name = String.valueOf(city1Json.getString("location").charAt(0)).toUpperCase() + city1Json.getString("location").substring(1, city1Json.getString("location").length());
+            if(locationType == "vacation"){
+                city1name = String.valueOf(city1Json.getString("location").charAt(0)).toUpperCase() + city1Json.getString("location").substring(1, city1Json.getString("location").length());
+                city2name = String.valueOf(city2Json.getString("location").charAt(0)).toUpperCase() + city2Json.getString("location").substring(1, city2Json.getString("location").length());
+            }
+            else{
+                city1name = String.valueOf(city1Json.getString("city").charAt(0)).toUpperCase() + city1Json.getString("city").substring(1, city1Json.getString("city").length());
+                city2name = String.valueOf(city2Json.getString("city").charAt(0)).toUpperCase() + city2Json.getString("city").substring(1, city2Json.getString("city").length());
+            }
+
 
             first_city.setText(city1name);
             image1URL = city1Json.getString("image_url");
             GlideApp.with(this).load(image1URL).into(first_city_image);
             second_city = (TextView)findViewById(R.id.second_city_name);
-            city2name = String.valueOf(city2Json.getString("location").charAt(0)).toUpperCase() + city2Json.getString("location").substring(1, city2Json.getString("location").length());
+
             second_city.setText(city2name);
             image2URL = city2Json.getString("image_url");
             GlideApp.with(this).load(image2URL).into(second_city_image);
@@ -306,7 +317,7 @@ public class LocationActivity extends AppCompatActivity {
     private void onTaskSuccess(String jsonResponse){
         Toast.makeText(getBaseContext(), "Task successful", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, RecommendationActivity.class);
-        intent.putExtra("jsonResponse",jsonResponse);
+        intent.putExtra("jsonResponse", jsonResponse);
         startActivity(intent);
     }
 
@@ -343,16 +354,13 @@ public class LocationActivity extends AppCompatActivity {
             if (conn.getResponseCode() == 200) {
                 String jsonResponse = "";
                 Scanner sc = new Scanner(conn.getInputStream());
-                while(sc.hasNext())
-                {
-                    jsonResponse+=sc.nextLine();
+                while (sc.hasNext()){
+                    jsonResponse += sc.nextLine();
                 }
                 sc.close();
-                Log.i("Login response", jsonResponse);
+                Log.i("Login response:", jsonResponse);
                 return jsonResponse;
             }
-
-            conn.disconnect();
 
             conn.disconnect();
         } catch (Exception e) {

@@ -29,6 +29,7 @@ public class Homepage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Homepage.this, RelocationActivity.class);
                 intent.putExtra("userId", userId);
+                System.out.println("Pauras task user: " + userId);
                 startActivity(intent);
             }
         });
