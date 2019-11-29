@@ -6,14 +6,17 @@
     <string name="preferences">Enter your preferences</string>
     <string name="reloc_button">Submit</string>
     <string name="goto_reloc">Go to Relocation Mode</string>
+    <string name="Weather">Weather</string>
 
     <string-array name="housing_array">
+        <item>Please select housing</item>
         <item>Under $200</item>
         <item>$200 to $700</item>
         <item>Above $700</item>
     </string-array>
 
     <string-array name="transportation_array">
+        <item>Please select transportation</item>
         <item>Public Road Transport</item>
         <item>Private Road Transport</item>
         <item>Water Transport</item>
@@ -22,6 +25,7 @@
     </string-array>
 
     <string-array name="weather_array">
+        <item>Please select weather</item>
         <item>Cold</item>
         <item>Warm</item>
         <item>Humid</item>
@@ -30,42 +34,49 @@
     </string-array>
 
     <string-array name="crime_array">
+        <item>Please select weather</item>
         <item>Low</item>
         <item>Moderate</item>
         <item>High</item>
     </string-array>
 
     <string-array name="population_array">
+        <item>Please select population</item>
         <item>Low</item>
         <item>Moderate</item>
         <item>High</item>
     </string-array>
 
     <string-array name="expenses_array">
+        <item>Please select living expenses</item>
         <item>Under $40k</item>
         <item>$40k to $100k</item>
         <item>Above $100k</item>
     </string-array>
 
     <string-array name="relocationCost_array">
+        <item>Please select relocation cost</item>
         <item>Under $5k</item>
         <item>$5k to $20k</item>
         <item>Above $100k</item>
     </string-array>
 
     <string-array name="distCities_array">
+        <item>Please select distance to nearest city</item>
         <item>Under 10 miles</item>
         <item>10 to 50 miles</item>
         <item>Above 50 miles</item>
     </string-array>
 
     <string-array name="traffic_array">
+        <item>Please select traffic condition</item>
         <item>Low</item>
         <item>Moderate</item>
         <item>High</item>
     </string-array>
 
     <string-array name="education_array">
+        <item>Please select educational facilities required</item>
         <item>Elementary</item>
         <item>High School</item>
         <item>College</item>
@@ -73,17 +84,20 @@
     </string-array>
 
     <string-array name="taxes_array">
+        <item>Please select taxes in city</item>
         <item>Under 5%</item>
         <item>5% to 15%</item>
         <item>Above 15%</item>
     </string-array>
 
     <string-array name="historicalPlaces_array">
+        <item>Please select if historical places are required</item>
         <item>Yes</item>
         <item>No</item>
     </string-array>
 
     <string-array name="terrain_array">
+        <item>Please select terrain</item>
         <item>Coastal</item>
         <item>Forest</item>
         <item>Mountain</item>
@@ -94,41 +108,49 @@
     </string-array>
 
     <string-array name="familyFriendly_array">
+        <item>Please select if city is family friendly</item>
         <item>Yes</item>
         <item>No</item>
     </string-array>
 
     <string-array name="season_array">
+        <item>Please select if peak season is required</item>
         <item>Off-season</item>
         <item>Peak season</item>
     </string-array>
 
     <string-array name="cuisine_array">
+        <item>Please select cuisine</item>
         <item>Local</item>
         <item>Continental</item>
     </string-array>
 
     <string-array name="partySpots_array">
+        <item>Please select if party spots are required</item>
         <item>Yes</item>
         <item>No</item>
     </string-array>
 
     <string-array name="transport_array">
+        <item>Please select type of transport</item>
         <item>Public</item>
         <item>Rental</item>
     </string-array>
 
     <string-array name="socialEnvironment_array">
+        <item>Please select social environment</item>
         <item>Friendly</item>
         <item>Acceptable</item>
     </string-array>
 
     <string-array name="vacation_array">
+        <item>Please select time of travel</item>
         <item>Off-Season</item>
         <item>Peak Season</item>
     </string-array>
 
     <string-array name="accomodation_array">
+        <item>Please select type of accomodation</item>
         <item>Hostel</item>
         <item>Homestay</item>
         <item>Hotel</item>
