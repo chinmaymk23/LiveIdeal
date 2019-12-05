@@ -79,21 +79,13 @@ public class LocationActivity extends AppCompatActivity {
 
     public void process(View view) {
         if (view.getId() == R.id.navigate_first_city) {
-//            intent = new Intent(android.content.Intent.ACTION_VIEW);
-//            intent.setData(Uri.parse("google.navigation:q=" + city1Json));
-//            chooser=Intent.createChooser(intent, "city1Json");
-//            startActivity(chooser);
-            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + city1Json);
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + city1name);
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         }
         if (view.getId() == R.id.navigate_second_city) {
-//            intent = new Intent(android.content.Intent.ACTION_VIEW);
-//            intent.setData(Uri.parse("google.navigation:q=" + city2Json));
-//            chooser=Intent.createChooser(intent, "city2Json");
-//            startActivity(chooser);
-            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + city2Json);
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + city2name);
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
