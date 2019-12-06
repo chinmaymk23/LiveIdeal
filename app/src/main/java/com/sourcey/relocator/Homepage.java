@@ -63,7 +63,7 @@ public class Homepage extends AppCompatActivity {
         vacationBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Homepage.this, Bookmark2.class);
+                Intent intent = new Intent(Homepage.this, Bookmark.class);
                 intent.putExtra("userId", userId);
                 intent.putExtra("locationType", "vacation");
                 startActivity(intent);
