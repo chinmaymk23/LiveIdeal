@@ -53,7 +53,7 @@ public class LocationActivity extends AppCompatActivity {
     private String city1name;
     private String city2name;
     private int userId;
-    private float rating = 0;
+    private float rating = 0.0f;
 
     private Button rateFirstCity;
     private Button rateSecondCity;
@@ -251,7 +251,7 @@ public class LocationActivity extends AppCompatActivity {
                 });
 
                 //Toast.makeText(getBaseContext(), "Rating: "+ratingBar.getNumStars(), Toast.LENGTH_LONG).show();
-                rating = (int) ratingBar.getRating();
+                rating = ratingBar.getRating();
                 saveRating();
             }
         });

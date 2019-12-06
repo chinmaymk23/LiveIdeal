@@ -137,6 +137,7 @@
     </string-array>
 
     <string-array name="socialEnvironment_array">
+        <item>Please select social environment</item>
         <item>Friendly</item>
         <item>Acceptable</item>
     </string-array>

@@ -96,16 +96,21 @@ public class VacationActivity extends AppCompatActivity {
 
         weatherArray = getResources().getStringArray(R.array.weather_array);
 
+
         weather.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                weatherVal = weatherArray[position];
+                if(position == 0)
+                    weatherVal = weatherArray[1];
+                else
+                    weatherVal = weatherArray[position];
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                weatherVal = weatherArray[0];       // If nothing is selected, then default value is first value
+                weatherVal = weatherArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -124,12 +129,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                historicalPlacesVal = historicalPlacesArray[position];
+                if(position == 0)
+                    historicalPlacesVal = historicalPlacesArray[1];
+                else
+                    historicalPlacesVal = historicalPlacesArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                historicalPlacesVal = historicalPlacesArray[0];       // If nothing is selected, then default value is first value
+                historicalPlacesVal = historicalPlacesArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -147,12 +155,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                terrainVal = terrainArray[position];
+                if(position == 0)
+                    terrainVal = terrainArray[1];
+                else
+                    terrainVal = terrainArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                terrainVal = terrainArray[0];       // If nothing is selected, then default value is first value
+                terrainVal = terrainArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -170,12 +181,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                familyFriendlyVal = familyFriendlyArray[position];
+                if(position == 0)
+                    familyFriendlyVal = familyFriendlyArray[1];
+                else
+                    familyFriendlyVal = familyFriendlyArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                familyFriendlyVal = familyFriendlyArray[0];       // If nothing is selected, then default value is first value
+                familyFriendlyVal = familyFriendlyArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -193,12 +207,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                partySpotsVal = partySpotsArray[position];
+                if(position == 0)
+                    partySpotsVal = partySpotsArray[1];
+                else
+                    partySpotsVal = partySpotsArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                partySpotsVal = partySpotsArray[0];       // If nothing is selected, then default value is first value
+                partySpotsVal = partySpotsArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -216,12 +233,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                cuisineVal = cuisineArray[position];
+                if(position == 0)
+                    cuisineVal = cuisineArray[1];
+                else
+                    cuisineVal = cuisineArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                cuisineVal = cuisineArray[0];       // If nothing is selected, then default value is first value
+                cuisineVal = cuisineArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -239,12 +259,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                transportVal = transportArray[position];
+                if(position == 0)
+                    transportVal = transportArray[1];
+                else
+                    transportVal = transportArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                transportVal = transportArray[0];       // If nothing is selected, then default value is first value
+                transportVal = transportArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -262,12 +285,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                socialEnvironmentVal = socialEnvironmentArray[position];
+                if(position == 0)
+                    socialEnvironmentVal = socialEnvironmentArray[1];
+                else
+                    socialEnvironmentVal = socialEnvironmentArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                socialEnvironmentVal = socialEnvironmentArray[0];       // If nothing is selected, then default value is first value
+                socialEnvironmentVal = socialEnvironmentArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -285,12 +311,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                seasonVal = seasonArray[position];
+                if(position == 0)
+                    seasonVal = seasonArray[1];
+                else
+                    seasonVal = seasonArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                seasonVal = seasonArray[0];       // If nothing is selected, then default value is first value
+                seasonVal = seasonArray[1];       // If nothing is selected, then default value is first value
             }
         });
 
@@ -308,12 +337,15 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                accomodationVal = accomodationArray[position];
+                if(position == 0)
+                    accomodationVal = accomodationArray[1];
+                else
+                    accomodationVal = accomodationArray[position];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                accomodationVal = accomodationArray[0];       // If nothing is selected, then default value is first value
+                accomodationVal = accomodationArray[1];       // If nothing is selected, then default value is first value
             }
         });
     }
