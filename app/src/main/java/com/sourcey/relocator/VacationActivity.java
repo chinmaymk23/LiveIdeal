@@ -403,6 +403,7 @@ public class VacationActivity extends AppCompatActivity {
             intent.putExtra("jsonResponse",jsonResponse);
             intent.putExtra("locationType", "vacation");
             intent.putExtra("userId", userId);
+            intent.putExtra("requestBody", jsonParam.toString());
             progressDialog.dismiss();
             startActivity(intent);
         }

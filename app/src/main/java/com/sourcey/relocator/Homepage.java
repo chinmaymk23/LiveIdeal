@@ -33,6 +33,7 @@ public class Homepage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Homepage.this, RelocationActivity.class);
                 intent.putExtra("userId", userId);
+                intent.putExtra("appMode", "relocation");
                 startActivity(intent);
             }
         });
@@ -44,6 +45,7 @@ public class Homepage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Homepage.this, VacationActivity.class);
                 intent.putExtra("userId", userId);
+                intent.putExtra("appMode", "vacation");
                 startActivity(intent);
             }
         });
