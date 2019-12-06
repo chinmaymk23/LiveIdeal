@@ -13,7 +13,6 @@ public class Homepage extends AppCompatActivity {
     private Button vacationMode;
     private Button relocationBookmark;
     private Button vacationBookmark;
-    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class Homepage extends AppCompatActivity {
         vacationBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Homepage.this, Bookmark.class);
+                Intent intent = new Intent(Homepage.this, Bookmark2.class);
                 intent.putExtra("userId", userId);
                 intent.putExtra("locationType", "vacation");
                 startActivity(intent);
