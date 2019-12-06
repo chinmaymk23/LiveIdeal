@@ -24,7 +24,7 @@
         <activity android:name=".Homepage" />
         <activity
             android:name=".MainActivity"
-            android:label="MoversApp">
+            android:label="Relocator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

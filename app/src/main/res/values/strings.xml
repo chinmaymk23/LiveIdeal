@@ -1,4 +1,41 @@
 <resources>
+    <string-array name="relocation_cities">
+        <item>New York City</item>
+        <item>Los Angeles</item>
+        <item>Houston</item>
+        <item>kansas City</item>
+        <item>Anchorage</item>
+        <item>Hattiesburg</item>
+        <item>Charleston</item>
+        <item>rock springs</item>
+        <item>Cerrilios</item>
+        <item>Grand Forks</item>
+        <item>San Francicso</item>
+        <item>Norman</item>
+        <item>Tampa</item>
+        <item>Tuscon</item>
+        <item>Rockford</item>
+
+    </string-array>
+
+    <string-array name="vacation_cities">
+        <item>Paris</item>
+        <item>Las Vegas</item>
+        <item>London</item>
+        <item>Amsterdam</item>
+        <item>Peru</item>
+        <item>Cuba</item>
+        <item>Manali</item>
+        <item>Hawaii</item>
+        <item>Niagara Falls</item>
+        <item>Rome</item>
+        <item>Vatican City</item>
+        <item>Sri Lanka</item>
+        <item>Philippines</item>
+        <item>Budapest</item>
+        <item>South Africa</item>
+        <item>Moscow</item>
+    </string-array>
     <string name="app_name">Movers</string>
 
     <string name="hello_world">Welcome!</string>
@@ -35,7 +72,7 @@
     <string-array name="crime_array">
         <item>Please select crime rate</item>
         <item>Low</item>
-        <item>Moderate</item>
+        <item>Medium</item>
         <item>High</item>
     </string-array>
 
@@ -50,7 +87,7 @@
         <item>Please select living expenses</item>
         <item>Under 40k</item>
         <item>40k to 100k</item>
-        <item>Above 100k</item>
+        <item>More than 100k</item>
     </string-array>
 
     <string-array name="relocationCost_array">
@@ -64,7 +101,7 @@
         <item>Please select distance to nearest city</item>
         <item>Under 10 miles</item>
         <item>10 to 50 miles</item>
-        <item>Above 50 miles</item>
+        <item>More than 50 miles</item>
     </string-array>
 
     <string-array name="traffic_array">
@@ -136,6 +173,7 @@
     </string-array>
 
     <string-array name="socialEnvironment_array">
+        <item>Please select social environment</item>
         <item>Friendly</item>
         <item>Acceptable</item>
     </string-array>

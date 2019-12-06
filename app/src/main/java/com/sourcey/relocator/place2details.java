@@ -3,10 +3,15 @@ package com.sourcey.relocator;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 public class place2details extends AppCompatActivity {
 
@@ -21,6 +26,9 @@ public class place2details extends AppCompatActivity {
     private TextView traffic;
     private TextView education;
     private TextView taxes;
+    private TextView similarityScore;
+    private TextView similarityScoreDesc;
+    private ImageView first_city_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,19 @@ public class place2details extends AppCompatActivity {
             taxes = findViewById(R.id.taxes);
             taxes.setText(cities.getString("taxes"));
 
+            first_city_image = findViewById(R.id.imageView);
+            GlideApp.with(this).load(cities.getString("image_url")).into(first_city_image);
+            if (cities.getString("similarity") == null) {
+                similarityScore = findViewById(R.id.textView16);
+                similarityScoreDesc = findViewById(R.id.similarityscore);
+                similarityScoreDesc.setVisibility(View.GONE);
+                similarityScore.setVisibility(View.GONE);
+            } else {
+                float num = Float.parseFloat(cities.getString("similarity")) * 100;
+                double n = Math.round(num * 100.0) / 100.0;
+                similarityScoreDesc = findViewById(R.id.similarityscore);
+                similarityScoreDesc.setText(String.valueOf(n));
+            }
         }catch (JSONException e){
             e.printStackTrace();
         }
