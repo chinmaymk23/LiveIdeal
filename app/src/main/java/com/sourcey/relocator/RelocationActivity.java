@@ -34,7 +34,23 @@ public class RelocationActivity extends AppCompatActivity {
     private String[] educationArray;
     private String[] taxesArray;
     private ProgressDialog progressDialog;
-
+    private String[] citiesArray = {
+            "New York City",
+            "Los Angeles",
+            "Houston",
+            "kansas City",
+            "Anchorage",
+            "Hattiesburg",
+            "Charleston",
+            "rock springs",
+            "Cerrilios",
+            "Grand Forks",
+            "San Francicso",
+            "Norman",
+            "Tampa",
+            "Tuscon",
+            "Rockford",
+    };
     private Spinner housing;
     private Spinner transportation;
     private Spinner weatherReloc;
@@ -46,7 +62,7 @@ public class RelocationActivity extends AppCompatActivity {
     private Spinner education;
     private Spinner taxes;
     private Button submit;
-
+    private String appMode;
     String housingVal;
     String transportationVal;
     String weatherRelocVal;
@@ -81,6 +97,10 @@ public class RelocationActivity extends AppCompatActivity {
         userId = intent.getIntExtra("userId", 0);
 
         progressDialog = new ProgressDialog(RelocationActivity.this, R.style.AppTheme_Dark_Dialog);
+
+        appMode = intent.getStringExtra("appMode");
+        System.out.println(">>>>>" + appMode);
+
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -307,12 +327,12 @@ public class RelocationActivity extends AppCompatActivity {
 
 
     }
+    JSONObject jsonParam = new JSONObject();
 
     public void submitForm(){
         JSONObject param = new JSONObject();
         try{
             String url = "https://mcfinalprojectml.herokuapp.com/getNearestRelocation";
-            JSONObject jsonParam = new JSONObject();
             JSONArray jsonWeather = new JSONArray();
             JSONArray jsonTransport = new JSONArray();
             jsonWeather.put(weatherRelocVal);
@@ -327,6 +347,7 @@ public class RelocationActivity extends AppCompatActivity {
             jsonParam.put("distance_from_other_cities", distCititesVal);
             jsonParam.put("weather", jsonWeather);
             jsonParam.put("access_of_local_transport", jsonTransport);
+            System.out.println(jsonParam.toString());
             RelocationTask RelocationTask = new RelocationTask(url, jsonParam);
             RelocationTask.execute();
         }catch (JSONException e){
@@ -356,6 +377,9 @@ public class RelocationActivity extends AppCompatActivity {
             intent.putExtra("jsonResponse",jsonResponse);
             intent.putExtra("locationType", "relocation");
             intent.putExtra("userId", userId);
+            intent.putExtra("appMode", appMode);
+            intent.putExtra("requestBody", jsonParam.toString());
+            System.out.println("setting here");
             progressDialog.dismiss();
             startActivity(intent);
         }

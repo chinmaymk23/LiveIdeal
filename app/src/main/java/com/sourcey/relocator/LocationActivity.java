@@ -1,9 +1,11 @@
 package com.sourcey.relocator;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +13,11 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,7 @@ public class LocationActivity extends AppCompatActivity {
     private Button bookmarkCity1;
     private Button bookmarkCity2;
 
+    private String appMode;
     private JSONObject city1Json;
     private JSONObject city2Json;
     private String jsonResponse;
@@ -49,23 +54,26 @@ public class LocationActivity extends AppCompatActivity {
     private String locationType;
 
     private Button navigateCity1;
+    private Button navigateCity2;
 
     private String city1name;
     private String city2name;
     private int userId;
-    private float rating = 0;
+    private float rating = 0.0f;
 
     private Button rateFirstCity;
     private Button rateSecondCity;
 
     private AlertDialog ratingDialog;
     private String rateCityName;
-
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
         shareButton2 = findViewById(R.id.share_second_city);
+        progressDialog = new ProgressDialog(LocationActivity.this, R.style.AppTheme_Dark_Dialog);
+
         shareButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,28 +115,95 @@ public class LocationActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(i,"Share via"));
             }
         });
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         jsonResponse = intent.getStringExtra("jsonResponse");
         locationType = intent.getStringExtra("locationType");
+        appMode = intent.getStringExtra("appMode");
+        System.out.println(">>>>> here  " + appMode + (String.valueOf(appMode).equalsIgnoreCase("relocation")));
+        Spinner spinner = findViewById(R.id.planets_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter;
+        if(String.valueOf(appMode).equalsIgnoreCase("relocation")) {
+            adapter = ArrayAdapter.createFromResource(this,
+                    R.array.relocation_cities, android.R.layout.simple_spinner_item);
+        } else {
+            adapter = ArrayAdapter.createFromResource(this,
+                    R.array.vacation_cities, android.R.layout.simple_spinner_item);
+        }
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
         userId = intent.getIntExtra("userId", 0);
 
         createDialog();
 
         navigateCity1 = findViewById(R.id.navigate_first_city);
+        navigateCity2 = findViewById(R.id.navigate_second_city);
         recommendation_1 = findViewById(R.id.recommendations_1);
         recommendation_2 = findViewById(R.id.recommendations_2);
         first_city_image = findViewById(R.id.first_city_image);
         second_city_image = findViewById(R.id.second_city_image);
         rateFirstCity = findViewById(R.id.rate_first_city);
         rateSecondCity = findViewById(R.id.rate_second_city);
-        
+
+
         String image1URL;
         String image2URL;
 
         try {
+            System.out.println(jsonResponse);
             JSONObject cities = new JSONObject(jsonResponse);
             city1Json = cities.getJSONObject("city1");
             city2Json = cities.getJSONObject("city2");
+
+            navigateCity1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri gmmIntentUri = null;
+                    System.out.println(">>>> "+city1Json.toString());
+                    if(locationType.equals("vacation")) {
+                        try {
+                            gmmIntentUri = Uri.parse("geo:0,0?q=" + city1Json.getString("location"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            gmmIntentUri = Uri.parse("geo:0,0?q=" + city1Json.getString("city"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
+            });
+
+            navigateCity2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri gmmIntentUri = null;
+                    System.out.println(">>>> "+city1Json.toString());
+                    if(locationType.equals("vacation")) {
+                        try {
+                            gmmIntentUri = Uri.parse("geo:0,0?q=" + city2Json.getString("location"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            gmmIntentUri = Uri.parse("geo:0,0?q=" + city2Json.getString("city"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
+            });
 
             first_city = (TextView)findViewById(R.id.first_city_name);
             if(locationType.equals("vacation")){
@@ -152,6 +227,32 @@ public class LocationActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     handleCity1Click();
+                }
+            });
+
+            findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String url;
+                    if(locationType.equals("vacation")) {
+                        url = "https://mcfinalprojectml.herokuapp.com/getVacationCity";
+                    } else {
+                        url = "https://mcfinalprojectml.herokuapp.com/getRelocationCity";
+
+                    }
+                    try{
+                        JSONObject param = new JSONObject(intent.getStringExtra("requestBody"));
+                        Spinner spin = (Spinner) findViewById(R.id.planets_spinner);
+                        param.put("city", spin.getSelectedItem().toString());
+                        Log.i("Location params", param.toString());
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setMessage("Loading...");
+                        progressDialog.show();
+                        ConnectTask conn = new ConnectTask(url, param, "searchcity");
+                        conn.execute();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             city2 = findViewById(R.id.second_city_container);
@@ -251,7 +352,7 @@ public class LocationActivity extends AppCompatActivity {
                 });
 
                 //Toast.makeText(getBaseContext(), "Rating: "+ratingBar.getNumStars(), Toast.LENGTH_LONG).show();
-                rating = (int) ratingBar.getRating();
+                rating = ratingBar.getRating();
                 saveRating();
             }
         });
@@ -340,6 +441,9 @@ public class LocationActivity extends AppCompatActivity {
                     onTaskSuccess(jsonResponse);
                 else if(requestType == "rating")
                     onTaskSuccess();
+                else if(requestType == "searchcity") {
+                    onSearchCityTaskSuccess(jsonResponse);
+                }
 
             }
             else
@@ -347,11 +451,23 @@ public class LocationActivity extends AppCompatActivity {
         }
     }
 
+    private void onSearchCityTaskSuccess(String jsonResponse) {
+        progressDialog.dismiss();
+        if(locationType.equals("vacation")) {
+            Intent intent = new Intent(LocationActivity.this, place_details.class);
+            intent.putExtra("jsonResponse", jsonResponse);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(LocationActivity.this, place2details.class);
+            intent.putExtra("jsonResponse", jsonResponse);
+            startActivity(intent);
+        }
+    }
+
     private void onTaskSuccess(String jsonResponse){
         Toast.makeText(getBaseContext(), "Task successful", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, RecommendationActivity.class);
         intent.putExtra("jsonResponse",jsonResponse);
-        intent.putExtra("locationType", locationType);
         startActivity(intent);
     }
 
@@ -503,6 +619,7 @@ public class LocationActivity extends AppCompatActivity {
 
             d = new DownLoadImageTask(image2URL, second_city_image);
             d.execute();*/
+
 
             /*navigateCity1.setOnClickListener(new View.OnClickListener() {
 
