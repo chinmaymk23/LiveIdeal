@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +49,7 @@ public class VacationActivity extends AppCompatActivity {
     private Spinner accomodation;
     private Button submitVacationPreferences;
 
-    long budgetVal;
+    long budgetVal = 0L;
     String budgetRange;
     String weatherVal;
     String historicalPlacesVal;
@@ -101,7 +102,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     weatherVal = weatherArray[1];
                 else
                     weatherVal = weatherArray[position];
@@ -129,7 +130,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     historicalPlacesVal = historicalPlacesArray[1];
                 else
                     historicalPlacesVal = historicalPlacesArray[position];
@@ -155,7 +156,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     terrainVal = terrainArray[1];
                 else
                     terrainVal = terrainArray[position];
@@ -181,7 +182,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     familyFriendlyVal = familyFriendlyArray[1];
                 else
                     familyFriendlyVal = familyFriendlyArray[position];
@@ -207,7 +208,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     partySpotsVal = partySpotsArray[1];
                 else
                     partySpotsVal = partySpotsArray[position];
@@ -233,7 +234,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     cuisineVal = cuisineArray[1];
                 else
                     cuisineVal = cuisineArray[position];
@@ -259,7 +260,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     transportVal = transportArray[1];
                 else
                     transportVal = transportArray[position];
@@ -285,7 +286,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     socialEnvironmentVal = socialEnvironmentArray[1];
                 else
                     socialEnvironmentVal = socialEnvironmentArray[position];
@@ -311,7 +312,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     seasonVal = seasonArray[1];
                 else
                     seasonVal = seasonArray[position];
@@ -337,7 +338,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
-                if(position == 0)
+                if (position == 0)
                     accomodationVal = accomodationArray[1];
                 else
                     accomodationVal = accomodationArray[position];
@@ -350,34 +351,34 @@ public class VacationActivity extends AppCompatActivity {
         });
     }
 
-    public void submitForm(){
-        try {
-            budgetVal = Long.parseLong(String.valueOf(budget.getText()));
+    public void submitForm() {
+        if (validate()) {
+            try {
+                if (budgetVal >= 10000)
+                    budgetRange = "high";
+                else if (budgetVal >= 3000 && budgetVal < 10000)
+                    budgetRange = "medium";
+                else
+                    budgetRange = "low";
 
-            if(budgetVal >= 10000)
-                budgetRange = "high";
-            else if(budgetVal >=3000 && budgetVal<10000)
-                budgetRange = "medium";
-            else
-                budgetRange = "low";
-
-            String url = "https://mcfinalprojectml.herokuapp.com/getNearestVacation";
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("budget", budgetRange);
-            jsonParam.put("weather", weatherVal);
-            jsonParam.put("historical", historicalPlacesVal);
-            jsonParam.put("terrain", terrainVal);
-            jsonParam.put("family_friendly", familyFriendlyVal);
-            jsonParam.put("party", partySpotsVal);
-            jsonParam.put("cuisine", cuisineVal);
-            jsonParam.put("transport", transportVal);
-            jsonParam.put("social_env", socialEnvironmentVal);
-            jsonParam.put("season", seasonVal);
-            jsonParam.put("accomodation", accomodationVal);
-            VacationTask VacationTask = new VacationTask(url, jsonParam);
-            VacationTask.execute();
-        } catch (JSONException e) {
-            System.out.println(e);
+                String url = "https://mcfinalprojectml.herokuapp.com/getNearestVacation";
+                JSONObject jsonParam = new JSONObject();
+                jsonParam.put("budget", budgetRange);
+                jsonParam.put("weather", weatherVal);
+                jsonParam.put("historical", historicalPlacesVal);
+                jsonParam.put("terrain", terrainVal);
+                jsonParam.put("family_friendly", familyFriendlyVal);
+                jsonParam.put("party", partySpotsVal);
+                jsonParam.put("cuisine", cuisineVal);
+                jsonParam.put("transport", transportVal);
+                jsonParam.put("social_env", socialEnvironmentVal);
+                jsonParam.put("season", seasonVal);
+                jsonParam.put("accomodation", accomodationVal);
+                VacationTask VacationTask = new VacationTask(url, jsonParam);
+                VacationTask.execute();
+            } catch (JSONException e) {
+                System.out.println(e);
+            }
         }
     }
 
@@ -400,7 +401,7 @@ public class VacationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String jsonResponse) {
             Intent intent = new Intent(VacationActivity.this, LocationActivity.class);
-            intent.putExtra("jsonResponse",jsonResponse);
+            intent.putExtra("jsonResponse", jsonResponse);
             intent.putExtra("locationType", "vacation");
             intent.putExtra("userId", userId);
             intent.putExtra("requestBody", jsonParam.toString());
@@ -408,7 +409,6 @@ public class VacationActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
 
 
     public String getVacationResponse(String url, JSONObject param) {
@@ -437,9 +437,8 @@ public class VacationActivity extends AppCompatActivity {
             if (conn.getResponseCode() == 200) {
                 String jsonResponse = new String();
                 Scanner sc = new Scanner(conn.getInputStream());
-                while(sc.hasNext())
-                {
-                    jsonResponse+=sc.nextLine();
+                while (sc.hasNext()) {
+                    jsonResponse += sc.nextLine();
                 }
                 sc.close();
                 return jsonResponse;
@@ -450,5 +449,17 @@ public class VacationActivity extends AppCompatActivity {
             System.out.println(e);
         }
         return null;
+    }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        budgetVal = Long.parseLong(String.valueOf(budget.getText()));
+        if (budgetVal <= 0) {
+            Toast.makeText(this, "Kindly enter budget value (Minimum:0)", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+
+        return valid;
     }
 }
