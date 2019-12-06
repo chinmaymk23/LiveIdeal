@@ -351,6 +351,7 @@ public class LocationActivity extends AppCompatActivity {
         Toast.makeText(getBaseContext(), "Task successful", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, RecommendationActivity.class);
         intent.putExtra("jsonResponse",jsonResponse);
+        intent.putExtra("locationType", locationType);
         startActivity(intent);
     }
 

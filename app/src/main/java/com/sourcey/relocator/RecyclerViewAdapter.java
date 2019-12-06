@@ -1,6 +1,7 @@
 package com.sourcey.relocator;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,18 +12,35 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> placeNames;
+    private List<String> placeNames;
     private ArrayList<String> buttonNames = new ArrayList<>();
     private Context mContext;
+    private int userId;
+    private String locationType;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> placeNames, ArrayList<String> buttonNames) {
+    public RecyclerViewAdapter(Context mContext, List<String> placeNames, ArrayList<String> buttonNames, int userId, String locationType) {
         this.placeNames = placeNames;
         this.buttonNames = buttonNames;
+        this.userId = userId;
+        this.locationType = locationType;
         this.mContext = mContext;
     }
 
@@ -43,15 +61,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "delete clicjked", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Deleted", Toast.LENGTH_LONG).show();
                 delete_bookmark(holder.getAdapterPosition());
             }
         });
     }
 
     private void delete_bookmark(int s) {
-        placeNames.remove(s);
-        notifyDataSetChanged();
+        try {
+            String url = "https://mcprojectauth.herokuapp.com/deleteBookMark";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("userId", userId);
+            jsonObject.put("place", placeNames.get(s));
+            jsonObject.put("type", locationType);
+            DeleteBookmark deleteBookmark = new DeleteBookmark(url, jsonObject);
+            deleteBookmark.execute();
+            placeNames.remove(s);
+            notifyDataSetChanged();
+        }catch (JSONException e){
+            System.out.println(e);
+        }
     }
 
     @Override
@@ -68,5 +97,65 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             place = itemView.findViewById(R.id.text);
             delete = itemView.findViewById(R.id.delete);
         }
+    }
+
+    public class DeleteBookmark extends AsyncTask<String, Void, Void>{
+        private final String url;
+        private final JSONObject jsonObject;
+
+        public DeleteBookmark(String url, JSONObject jsonObject){
+            this.url = url;
+            this.jsonObject = jsonObject;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            try{
+                URL myUrl = new URL(url);
+
+                HttpURLConnection connection = (HttpURLConnection)myUrl.openConnection();
+
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
+
+                connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Accept", "application/json");
+                if(this.jsonObject != null){
+                    OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                    writer.write(jsonObject.toString());
+                    writer.flush();
+                }
+                int statusCode = connection.getResponseCode();
+
+                if(statusCode == 200){
+                    InputStream inputStream = new BufferedInputStream(connection.getInputStream());
+
+                    String response = convertInputStreamToString(inputStream);
+                }   else{
+
+                }
+            }catch (Exception e){
+                Log.d(TAG, e.getLocalizedMessage());
+            }
+            return null;
+        }
+
+
+
+
+    }
+    private String convertInputStreamToString(InputStream inputStream) {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            while((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 }

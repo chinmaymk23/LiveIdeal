@@ -76,7 +76,6 @@
 
     <string-array name="education_array">
         <item>Please select educational facilities required</item>
-        <item>Elementary</item>
         <item>High School</item>
         <item>College</item>
         <item>Graduate</item>
