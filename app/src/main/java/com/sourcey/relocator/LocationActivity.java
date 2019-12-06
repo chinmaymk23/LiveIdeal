@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class LocationActivity extends AppCompatActivity {
     private String locationType;
 
     private Button navigateCity1;
+    private Button navigateCity2;
 
     private String city1name;
     private String city2name;
@@ -137,13 +139,15 @@ public class LocationActivity extends AppCompatActivity {
         createDialog();
 
         navigateCity1 = findViewById(R.id.navigate_first_city);
+        navigateCity2 = findViewById(R.id.navigate_second_city);
         recommendation_1 = findViewById(R.id.recommendations_1);
         recommendation_2 = findViewById(R.id.recommendations_2);
         first_city_image = findViewById(R.id.first_city_image);
         second_city_image = findViewById(R.id.second_city_image);
         rateFirstCity = findViewById(R.id.rate_first_city);
         rateSecondCity = findViewById(R.id.rate_second_city);
-        
+
+
         String image1URL;
         String image2URL;
 
@@ -152,6 +156,54 @@ public class LocationActivity extends AppCompatActivity {
             JSONObject cities = new JSONObject(jsonResponse);
             city1Json = cities.getJSONObject("city1");
             city2Json = cities.getJSONObject("city2");
+
+            navigateCity1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri gmmIntentUri = null;
+                    System.out.println(">>>> "+city1Json.toString());
+                    if(locationType.equals("vacation")) {
+                        try {
+                            gmmIntentUri = Uri.parse("geo:0,0?q=" + city1Json.getString("location"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            gmmIntentUri = Uri.parse("geo:0,0?q=" + city1Json.getString("city"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
+            });
+
+            navigateCity2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri gmmIntentUri = null;
+                    System.out.println(">>>> "+city1Json.toString());
+                    if(locationType.equals("vacation")) {
+                        try {
+                            gmmIntentUri = Uri.parse("geo:0,0?q=" + city2Json.getString("location"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            gmmIntentUri = Uri.parse("geo:0,0?q=" + city2Json.getString("city"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
+            });
 
             first_city = (TextView)findViewById(R.id.first_city_name);
             if(locationType.equals("vacation")){
@@ -567,6 +619,7 @@ public class LocationActivity extends AppCompatActivity {
 
             d = new DownLoadImageTask(image2URL, second_city_image);
             d.execute();*/
+
 
             /*navigateCity1.setOnClickListener(new View.OnClickListener() {
 
