@@ -380,6 +380,10 @@ public class VacationActivity extends AppCompatActivity {
                 System.out.println(e);
             }
         }
+        else{
+            Toast.makeText(this, "Please enter budget greater than 0", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+        }
     }
 
     class VacationTask extends AsyncTask<Void, Void, String> {
@@ -454,9 +458,15 @@ public class VacationActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        budgetVal = Long.parseLong(String.valueOf(budget.getText()));
-        if (budgetVal <= 0) {
-            Toast.makeText(this, "Kindly enter budget value (Minimum:0)", Toast.LENGTH_SHORT).show();
+        if(budget!=null && !budget.getText().toString().equals("")) {
+            Log.i("Budget value", budget.getText().toString());
+            budgetVal = Long.parseLong(budget.getText().toString());
+            if (budgetVal <= 0) {
+                Toast.makeText(this, "Kindly enter budget value greater than 0", Toast.LENGTH_SHORT).show();
+                valid = false;
+            }
+        }else{
+            Toast.makeText(this, "Kindly enter budget value greater than 0", Toast.LENGTH_SHORT).show();
             valid = false;
         }
 
