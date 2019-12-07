@@ -134,7 +134,7 @@ public class SignupActivity extends AppCompatActivity {
         finish();
     }
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Sign Up failed", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
     }
 
@@ -168,17 +168,19 @@ public class SignupActivity extends AppCompatActivity {
             _username.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (reEnterPassword.isEmpty()) {
+            _reEnterPasswordText.setError("Password fields cannot be blank");
             valid = false;
-        } else {
-            _passwordText.setError(null);
         }
-
-        if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
-            _reEnterPasswordText.setError("Password Do not match");
+        else if(reEnterPassword.length() < 4 || reEnterPassword.length() > 10){
+            _reEnterPasswordText.setError("Atleast 4 characters");
             valid = false;
-        } else {
+        }
+        else if (!(reEnterPassword.equals(password))){
+            _reEnterPasswordText.setError("Passwords Do not match");
+            valid = false;    
+        }
+        else {
             _reEnterPasswordText.setError(null);
         }
 
