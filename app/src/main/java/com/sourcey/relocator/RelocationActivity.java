@@ -125,12 +125,15 @@ public class RelocationActivity extends AppCompatActivity {
         housing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                housingVal = housingArray[i];
+                if(i == 0)
+                    housingVal = housingArray[1];
+                else
+                    housingVal = housingArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                housingVal = housingArray[0];//if nothing is selected, then default value is first value
+                housingVal = housingArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -146,12 +149,15 @@ public class RelocationActivity extends AppCompatActivity {
         transportation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                transportationVal = transportationArray[i];
+                if(i == 0)
+                    transportationVal = transportationArray[1];
+                else
+                    transportationVal = transportationArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                transportationVal = transportationArray[0];//if nothing is selected, then default value is first value
+                transportationVal = transportationArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -167,12 +173,15 @@ public class RelocationActivity extends AppCompatActivity {
         weatherReloc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                weatherRelocVal = weatherRelocArray[i];
+                if(i == 0)
+                    weatherRelocVal = weatherRelocArray[1];
+                else
+                    weatherRelocVal = weatherRelocArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                weatherRelocVal = weatherRelocArray[0];//if nothing is selected, then default value is first value
+                weatherRelocVal = weatherRelocArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -188,12 +197,15 @@ public class RelocationActivity extends AppCompatActivity {
         crime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                crimeVal = crimeArray[i];
+                if(i == 0)
+                    crimeVal = crimeArray[1];
+                else
+                    crimeVal = crimeArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                crimeVal = crimeArray[0];//if nothing is selected, then default value is first value
+                crimeVal = crimeArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -209,12 +221,15 @@ public class RelocationActivity extends AppCompatActivity {
         population.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                populationVal = populationArray[i];
+                if(i == 0)
+                    populationVal = populationArray[1];
+                else
+                    populationVal = populationArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                populationVal = populationArray[0];//if nothing is selected, then default value is first value
+                populationVal = populationArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -230,12 +245,15 @@ public class RelocationActivity extends AppCompatActivity {
         expenses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                expensesVal = expensesArray[i];
+                if(i == 0)
+                    expensesVal = expensesArray[1];
+                else
+                    expensesVal = expensesArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                expensesVal = expensesArray[0];//if nothing is selected, then default value is first value
+                expensesVal = expensesArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -253,12 +271,15 @@ public class RelocationActivity extends AppCompatActivity {
         distCitites.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                distCititesVal = distCitiesArray[i];
+                if(i == 0)
+                    distCititesVal = distCitiesArray[1];
+                else
+                    distCititesVal = distCitiesArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                distCititesVal = distCitiesArray[0];//if nothing is selected, then default value is first value
+                distCititesVal = distCitiesArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -274,12 +295,15 @@ public class RelocationActivity extends AppCompatActivity {
         traffic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                trafficVal = trafficArray[i];
+                if(i == 0)
+                    trafficVal = trafficArray[1];
+                else
+                    trafficVal = trafficArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                trafficVal = trafficArray[0];//if nothing is selected, then default value is first value
+                trafficVal = trafficArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -295,12 +319,15 @@ public class RelocationActivity extends AppCompatActivity {
         education.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                educationVal = educationArray[i];
+                if(i == 0)
+                    educationVal = educationArray[1];
+                else
+                    educationVal = educationArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                educationVal = educationArray[0];//if nothing is selected, then default value is first value
+                educationVal = educationArray[1];//if nothing is selected, then default value is first value
             }
         });
 
@@ -316,12 +343,15 @@ public class RelocationActivity extends AppCompatActivity {
         taxes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                taxesVal = taxesArray[i];
+                if(i == 0)
+                    taxesVal = taxesArray[1];
+                else
+                    taxesVal = taxesArray[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                taxesVal = taxesArray[0];//if nothing is selected, then default value is first value
+                taxesVal = taxesArray[1];//if nothing is selected, then default value is first value
             }
         });
 
