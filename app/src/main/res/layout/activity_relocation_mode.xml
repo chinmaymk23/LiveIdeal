@@ -17,12 +17,20 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/preferences"
                 android:layout_width="match_parent"
-                android:layout_height="39dp"
+                android:layout_height="match_parent"
                 android:gravity="center"
+                android:paddingTop="10dp"
                 android:text="@string/preferences"
-                android:layout_margin="10dp"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/noteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/note" />
 
             <Spinner
                 android:id="@+id/housing"

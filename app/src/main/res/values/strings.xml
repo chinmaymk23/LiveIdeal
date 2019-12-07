@@ -41,6 +41,7 @@
     <string name="hello_world">Welcome!</string>
     <string name="action_settings">Settings</string>
     <string name="preferences">Enter your preferences</string>
+    <string name="note">(Note: Default value is first option)</string>
     <string name="reloc_button">Submit</string>
     <string name="goto_reloc">Go to Relocation Mode</string>
     <string name="Weather">Weather</string>
