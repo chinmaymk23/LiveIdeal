@@ -248,7 +248,7 @@ public class LocationActivity extends AppCompatActivity {
                         progressDialog.setIndeterminate(true);
                         progressDialog.setMessage("Loading...");
                         progressDialog.show();
-                        ConnectTask conn = new ConnectTask(url, param, "searchcity");
+                        ConnectTask conn = new ConnectTask(url, param, "searchcity", locationType);
                         conn.execute();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -324,7 +324,7 @@ public class LocationActivity extends AppCompatActivity {
             param.put("place", rateCityName);
             param.put("rating", rating);
             Log.i("Location params", param.toString());
-            ConnectTask conn = new ConnectTask(url, param, "rating");
+            ConnectTask conn = new ConnectTask(url, param, "rating", locationType);
             conn.execute();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -379,7 +379,7 @@ public class LocationActivity extends AppCompatActivity {
             param.put("type", locationType);
             param.put("alreadyPresentCities", new JSONArray(cities));
             Log.i("Location params", param.toString());
-            ConnectTask conn = new ConnectTask(url, param, "recommendation");
+            ConnectTask conn = new ConnectTask(url, param, "recommendation", locationType);
             conn.execute();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -419,12 +419,14 @@ public class LocationActivity extends AppCompatActivity {
         private final String url;
         private final JSONObject jsonParam;
         private final String requestType;
+        private final String locationType;
 
-        public ConnectTask(String url, JSONObject jsonParam, String type) {
+        public ConnectTask(String url, JSONObject jsonParam, String type, String locationType) {
 
             this.url = url;
             this.jsonParam = jsonParam;
             this.requestType = type;
+            this.locationType = locationType;
         }
 
         @Override
@@ -466,9 +468,15 @@ public class LocationActivity extends AppCompatActivity {
 
     private void onTaskSuccess(String jsonResponse){
         Toast.makeText(getBaseContext(), "Task successful", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, RecommendationActivity.class);
-        intent.putExtra("jsonResponse",jsonResponse);
-        startActivity(intent);
+        if(locationType.equals("vacation")) {
+            Intent intent = new Intent(this, RecommendationActivity.class);
+            intent.putExtra("jsonResponse", jsonResponse);
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(this, Recommendation2Activity.class);
+            intent.putExtra("jsonResponse", jsonResponse);
+            startActivity(intent);
+        }
     }
 
     private void onTaskSuccess(){
