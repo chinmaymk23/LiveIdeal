@@ -54,11 +54,7 @@ public class SignupActivity extends AppCompatActivity {
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(intent);
                 finish();
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
 
@@ -100,7 +96,6 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-
     public boolean registerUser(String url, JSONObject param){
         try {
             URL urlObj = new URL(url);
@@ -136,8 +131,7 @@ public class SignupActivity extends AppCompatActivity {
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
+        finish();
     }
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
